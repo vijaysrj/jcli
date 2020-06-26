@@ -19,14 +19,14 @@ public class JCli implements Callable<String> {
     private  String projectName;
 
 
-    @Option(names = {"--create-class","-cc"},description = "Creates a new Java Class")
+    @Option(names = {"--create-class","-cc"},description = "Creates a new Java Class in the package under src folder")
     private String className;
 
 
-    @Option(names = {"--create-interface","-ci"},description = "Creates a new Java Interface")
+    @Option(names = {"--create-interface","-ci"},description = "Creates a new Java Interface in the package under src folder")
     private String interfaceName;
 
-    @Option(names={"--create-package","-cp"},description = "Creates a new Java Package")
+    @Option(names={"--create-package","-cp"},description = "Creates a new Java Package under src folder")
     private String packageName;
 
     @Option(names={"--compile","-c"},description = "Compiles Project")
@@ -38,8 +38,15 @@ public class JCli implements Callable<String> {
     @Option(names={"--main-class","-mc"},description = "Denotes the main class(fully qualified name) which needs to be run")
     private String mainClass;
 
-    @Option(names={"--edit","-e"},description = "Opens given file for editing")
+    @Option(names={"--create-file","-cf"},description ="Creates a new file in the same directory where the command is executed")
+    private  String createFile;
+
+    @Option(names={"--edit","-e"},description = "Opens given file for editing (searches in src folder under the package given in the file name)")
     private String editFile;
+
+
+    @Option(names={"--delete","-d"},description = "Deletes given file (searches in src folder under the package given in the file name)")
+    private String deleteFile;
 
     @Override
     public String call() throws Exception {
@@ -54,7 +61,12 @@ public class JCli implements Callable<String> {
 
             InterfaceCommands.createInterface(interfaceName);
 
+            FileCommands.createFile(createFile);
+
             FileCommands.editFile(editFile);
+
+            FileCommands.deleteFile(deleteFile);
+
 
             BuildCommands.buildProject(build);
 
